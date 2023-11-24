@@ -2,16 +2,16 @@ openapi: 3.0.3
 info:
   title: Swagger RESTAURANTE MEXICANO 821 - OpenAPI 3.0
   description: |-
-    This is a sample RESTAURANTE MEXICANO 821  Server based on the OpenAPI 3.0 specification.  You can find out more about
+    This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about
     Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
     You can now help us improve the API whether it's by making changes to the definition itself or to the code.
     That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
 
-    _If you're looking for the Swagger 2.0/OAS 2.0 version of RESTAURANTE MEXICANO 821, then click [here](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load via the `Edit > Load Petstore OAS 2.0` menu option!_
+    _If you're looking for the Swagger 2.0/OAS 2.0 version of Petstore, then click [here](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load via the `Edit > Load Petstore OAS 2.0` menu option!_
     
     Some useful links:
-    - [The RESTAURANTE MEXICANO 821 repository](https://github.com/swagger-api/swagger-RESTAURANTE MEXICANO 821)
-    - [The source API definition for the RESTAURANTE MEXICANO 821](https://github.com/swagger-api/swagger-RESTAURANTE MEXICANO 821/blob/master/src/main/resources/openapi.yaml)
+    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
+    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
   termsOfService: http://swagger.io/terms/
   contact:
     email: RESTAURANTE MEXICANO 821@swagger.io
@@ -37,45 +37,7 @@ tags:
       url: http://swagger.io
 paths:
   /Dish:
-    put:
-      tags:
-        - Dish
-      summary: Update an existing Dish in the Menu
-      description: Update an existing Dish by Id
-      operationId: updateDish
-      requestBody:
-        description: Update an existent Dish in the Restaurant
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Dish'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Dish'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Dish'
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dish'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Dish'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Dish not found
-        '405':
-          description: Validation exception
-      security:
-        - dishmenu_auth:
-            - write:dish
-            - read:dish
+    
     post:
       tags:
         - Dish
@@ -112,82 +74,7 @@ paths:
             - write:dish
             - read:dish
   /Dish/findByStatus:
-    get:
-      tags:
-        - Dish
-      summary: Finds Dishes by status
-      description: Multiple status values can be provided with comma separated strings
-      operationId: findDishByStatus
-      parameters:
-        - name: status
-          in: query
-          description: Status values that need to be considered for filter
-          required: false
-          explode: true
-          schema:
-            type: string
-            default: available
-            enum:
-              - available
-              - pending
-              - sold
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Dish'          
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Dish'
-        '400':
-          description: Invalid status value
-      security:
-        - dishmenu_auth:
-            - write:dish
-            - read:dish
-  /Dish/findByTags:
-    get:
-      tags:
-        - Dish
-      summary: Finds Dishes by tags
-      description: Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
-      operationId: findDishesByTags
-      parameters:
-        - name: Dish
-          in: query
-          description: Tags to filter by
-          required: false
-          explode: true
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Dish'          
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Dish'
-        '400':
-          description: Invalid tag value
-      security:
-        - dishmenu_auth:
-            - write:Dish
-            - read:Dish
+   
   /Dish/{DishId}:
     get:
       tags:
@@ -222,7 +109,7 @@ paths:
         - dishmenu_auth:
             - write:dish
             - read:dish
-    post:
+    put:
       tags:
         - Dish
       summary: Updates a Dish in the Restaurant with form data
@@ -316,7 +203,7 @@ components:
           example: 98
         name:
           type: string
-          example: Flautas con queso
+          example: Flautas con Salsa
         category:
           $ref: '#/components/schemas/Category'
         photoUrls:
@@ -357,7 +244,7 @@ components:
       type: oauth2
       flows:
         implicit:
-          authorizationUrl: https://RESTAURANTE MEXICANO 821.Restaurant.io/oauth/authorize
+          authorizationUrl: https://Swagger RESTAURANTE MEXICANO 821.io/oauth/authorize
           scopes:
             write:pets: modify dishes in your account
             read:pets: read your disehes in the menu
