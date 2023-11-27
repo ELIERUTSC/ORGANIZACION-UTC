@@ -1,0 +1,274 @@
+openapi: 3.0.3
+info:
+  title: Swagger RESTAURANTE MEXICANO 821 - OpenAPI 3.0
+  description: |
+    This is a sample RESTAURANT Server based on the OpenAPI 3.0 specification. You can find out more about
+    Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the RESTAURANT, we've switched to the design-first approach!
+    You can now help us improve the API, whether it's by making changes to the definition itself or to the code.
+    That way, with time, we can improve the API in general and expose some of the new features in OAS3.
+
+    _If you're looking for the Swagger 2.0/OAS 2.0 version of RESTAURANT, then click [here](https://github.com/ELIERUTSC/ORGANIZACION-UTC/blob/main/openapi.yaml). Alternatively, you can load via the `Edit > Load RESTAURANTE MEXICANO 821 OAS 2.0` menu option!_
+    
+    Some useful links:
+    - [The RESTAURANT repository](https://github.com/ELIERUTSC/ORGANIZACION-UTC/blob/main/openapi.yaml)
+    - [The source API definition for the RESTAURANT](https://github.com/ELIERUTSC/ORGANIZACION-UTC/blob/main/openapi.yaml)
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: RESTAURANTE_MEXICANO_821@swagger.io  # Corregido el formato del correo electrónico
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://RESTAURANTE-MEXICANO-821.Restaurant.io/api/v3
+tags:
+  - name: RESTAURANTE MEXICANO 821
+    description: "Find out more"  # Corregido para que sea una cadena
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: Dish
+    description: Access to Menu orders
+    externalDocs:
+      description: Find out more about our Restaurant
+      url: http://swagger.io
+paths:
+  /Dish:
+    post:
+      tags:
+        - Dish
+      summary: Add a new Dish to the Menu
+      description: Add a new Dish to the Menu/Restaurant
+      operationId: addDish
+      requestBody:
+        description: Create a new Dish in the Menu
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dish'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Dish'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Dish'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dish'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Dish'
+        '405':
+          description: Invalid input
+      security:
+        - dishmenu_auth:
+            - write:dish
+            - read:dish
+  
+  /Dish/{DishId}:
+    get:
+      tags:
+        - Dish
+      summary: Find Dish by ID
+      description: Returns a single Dish from the Menu
+      operationId: getDishById
+      parameters:
+        - name: DishId
+          in: path
+          description: ID of Dish to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dish'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Dish'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Dish not found
+      security:
+        - api_key: []
+        - dishmenu_auth:
+            - write:dish
+            - read:dish
+    put:
+      tags:
+        - Dish
+      summary: Updates a Dish in the Restaurant with form data
+      description: ''
+      operationId: updateDishWithForm
+      parameters:
+        - name: DishId
+          in: path
+          description: ID of dish that needs to be updated
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: name
+          in: query
+          description: Name of dish that needs to be updated
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Status of dish that needs to be updated
+          schema:
+            type: string
+      responses:
+        '405':
+          description: Invalid input
+      security:
+        - dishmenu_auth:
+            - write:dish
+            - read:dish
+    delete:
+      tags:
+        - Dish
+      summary: Deletes a Dish
+      description: delete a Dish
+      operationId: deleteDish
+      parameters:
+        - name: api_key
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: DishId
+          in: path
+          description: Dish id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid dish value
+      security:
+        - dishmenu_auth:
+            - write:dish
+            - read:dish
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Flautas
+      xml:
+        name: Category
+    Dish:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Flautas
+        photoUrls:
+          type: array
+          xml:
+            name: photoUrl
+            wrapped: true
+          items:
+            type: string
+          example:
+            - https://www.example.com/flautas1.jpg
+            - https://www.example.com/flautas2.jpg
+        category:
+          $ref: '#/components/schemas/Category'
+        tags:
+          type: array
+          xml:
+            name: tag
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Tag'
+        status:
+          type: string
+          description: Dish Status
+          enum:
+            - available
+            - pending
+            - sold
+          example: available
+      xml:
+        name: Dish
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        dishId:
+          type: integer
+          format: int64
+          example: 1
+        quantity:
+          type: integer
+          format: int32
+          example: 5
+        shipDate:
+          type: string
+          format: date-time
+          example: '2023-01-01T12:00:00Z'
+        status:
+          type: string
+          description: Order Status
+          enum:
+            - placed
+            - approved
+            - delivered
+          example: approved
+      xml:
+        name: Order
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Mexican
+      xml:
+        name: Tag
+  securitySchemes:
+    dishmenu_auth:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://RESTAURANTE-MEXICANO-821.Restaurant.io/api/v3/user/login
+          scopes:
+            write:dish: update a Dish
+            read:dish: read access to a Dish
+    api_key:
+      type: apiKey
+      in: header
+      name: api_key
